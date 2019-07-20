@@ -55,7 +55,7 @@ namespace Vector
         //and then makes data pointing to 'newData'.
         private void ExtendData(int extraCapacity)
         {
-            T[] newData = new T[data.Length + extraCapacity];
+            T[] newData = new T[Capacity + extraCapacity];
             for (int i = 0; i < Count; i++) newData[i] = data[i];
             data = newData;
         }
@@ -90,14 +90,8 @@ namespace Vector
         public void Insert(int index, T element)
         {
 
-            if (index >= Count || index < 0) throw new IndexOutOfRangeException(nameof(index));
-            if (Count <= Capacity) ExtendData(DEFAULT_CAPACITY);
-            if (index == Count) //data[Count] = element;
-            {
-                Count++;
-                data[Count] = element;
-                
-            }
+            if (index > Count || index < 0) throw new IndexOutOfRangeException(nameof(element));
+            if (Count == Capacity) ExtendData(DEFAULT_CAPACITY);
 
             for (int i = Count; i > index; i--)
             {
@@ -148,9 +142,10 @@ namespace Vector
        
         public override string ToString()
         {
-            for (int i = 0; i < data.Length; i++)
+            string stringData = "";
+            for (int i = 0; i < Count; i++)
             {
-                string stringData = Convert.ToString(data[i]);
+                stringData += string.Format("{0},", data[i]);
                 return stringData;
             }
             throw new NotImplementedException();
