@@ -19,8 +19,10 @@ namespace Vector
         public int Count { get; private set; } = 0;
 
         // This property represents the maximum number of elements (capacity) in the vector
-        public int Capacity { get; private set; } = 0;
-
+        public int Capacity
+        {
+            get { return data.Length; }
+        }
         // This is an overloaded constructor
         public Vector(int capacity)
         {
@@ -95,14 +97,14 @@ namespace Vector
             T[] newData = new T[Count++]; //resize the array
 
             //copy all elements to the left of the insertion point to new collection at same index as original
-            for (int i = 0; i < index; i++)
+            for (var i = 0; i < index; i++)
             {
                 newData[i] = data[i];
             }
             //insert element into new array at specified index
             newData[index] = element;
             //copy all all elements to the right of the insertion point to new collection
-            for (int i = index++; i < Count; i++)
+            for (var i = index++; i < Count; i++)
             {
                 newData[i] = data[i - 1];
             }
@@ -118,7 +120,7 @@ namespace Vector
          //          Count = 0;
          //          Capacity = DEFAULT_CAPACITY;
 
-            for (int i = Count - 1; i >= 0; i--)
+            for (var i = Count - 1; i >= 0; i--)
             {
                     data[Count--] = default(T);
             }
@@ -142,25 +144,20 @@ namespace Vector
 
         public bool Remove(T element)
         {
-            for (int i = Count - 1; i >= 0; i--)
-            {
-                if (data[i].Equals(element))
-                data[--Count] = default(T);
-            }
-            var index = IndexOf(element);
+ //           for (var i = Count - 1; i >= 0; i--)
+ //           {
+                if (data[Count].Equals(element))
+                data[Count] = default(T);
+ //           }
+            int index = IndexOf(element);
             //data[index] = data[Count];
            // data[Count] = data[Count--];
             //data[Count--] = data[index];
             //for (int i = Count; i >= 0; i--) data[Count--] = element;
             if (index < 0)
-            {
                 return true;
-            }
-            else
-            {
-                return false;
-            }
-                 throw new NotImplementedException();
+            return false;
+             throw new NotImplementedException();
         }
 
         public void RemoveAt(int index)
