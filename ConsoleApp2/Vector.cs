@@ -31,7 +31,7 @@ namespace Vector
 
         // This is the implementation of the default constructor
         public Vector() : this(DEFAULT_CAPACITY) { }
-
+            
         // An Indexer is a special type of property that allows a class or structure to be accessed the same way as 
         // array for its internal collection. 
         // For example, introducing the following indexer you may address an element of the vector as vector[i] or vector[0] or ...
@@ -64,8 +64,7 @@ namespace Vector
         // If the internal array is out of capacity, its capacity is first extended to fit the new element.
         public void Add(T element)
         {
-            if (Count == data.Length) ExtendData(DEFAULT_CAPACITY);
-            //add element to the end of the vector, extending the count.
+            if (Count == Capacity) ExtendData(DEFAULT_CAPACITY);
             data[Count++] = element;
         }
 
@@ -90,46 +89,28 @@ namespace Vector
         // Read the instruction carefully, study the code examples from above as they should help you to write the rest of the code.
         public void Insert(int index, T element)
         {
-            if (index >= Count || index < 0) throw new IndexOutOfRangeException();
-            if (Count == data.Length) ExtendData(DEFAULT_CAPACITY); //Correct
-            if (Count == index) Add(element); //Correct
 
-            T[] newData = new T[Count++]; //resize the array
+            if (index >= Count || index < 0) throw new IndexOutOfRangeException(nameof(index));
+            if (Count <= Capacity) ExtendData(DEFAULT_CAPACITY);
+            if (index == Count) //data[Count] = element;
+            {
+                Count++;
+                data[Count] = element;
+                
+            }
 
-            //copy all elements to the left of the insertion point to new collection at same index as original
-            for (var i = 0; i < index; i++)
+            for (int i = Count; i > index; i--)
             {
-                newData[i] = data[i];
+                data[i] = data[i - 1];
             }
-            //insert element into new array at specified index
-            newData[index] = element;
-            //copy all all elements to the right of the insertion point to new collection
-            for (var i = index++; i < Count; i++)
-            {
-                newData[i] = data[i - 1];
-            }
-            data = newData;
+            data[index] = element;
+            Count++;         
         }
 
         public void Clear()
         {
-         //      for (int i = 0; i < data.Length; i++)
-         //      {
-         //          data[i] = default(T);
-         //      }
-         //          Count = 0;
-         //          Capacity = DEFAULT_CAPACITY;
-
-            for (var i = Count - 1; i >= 0; i--)
-            {
-                    data[Count--] = default(T);
-            }
-         //   for (int i = 0; i < data.Length; i++)
-         //   {
-         //       data[i] = default(T);
-         //   }
-         //   Count = 0;
-            throw new NotImplementedException();
+            data = new T[DEFAULT_CAPACITY];
+            Count = 0;
         }
 
         public bool Contains(T element)
@@ -139,44 +120,30 @@ namespace Vector
                 if (data[i].Equals(element)) return true;
             }
             return false;
-            throw new NotImplementedException();
         }
 
         public bool Remove(T element)
         {
- //           for (var i = Count - 1; i >= 0; i--)
- //           {
-                if (data[Count].Equals(element))
-                data[Count] = default(T);
- //           }
-            int index = IndexOf(element);
-            //data[index] = data[Count];
-           // data[Count] = data[Count--];
-            //data[Count--] = data[index];
-            //for (int i = Count; i >= 0; i--) data[Count--] = element;
-            if (index < 0)
+                var index = IndexOf(element);
+  
+                if (index > -1)
+            {
+                RemoveAt(index);
                 return true;
+            }
             return false;
-             throw new NotImplementedException();
         }
-
+        
         public void RemoveAt(int index)
         {
             if (index >= Count || index < 0) throw new IndexOutOfRangeException();
 
-            T[] newData = new T[data.Length -1]; //resize the array
-                //copy all elements to the left of the deletion point to new collection at indices corresponding to original
-                for (int i = 0; i < index; i++)
-                {
-                    newData[i] = data[i];
-                }
-         
-                //copy all elements to the right of the deletion point to new collection, omitting the index to be deleted
-                for (int i = index; i < data.Length; i++)
-                {
-                    newData[i] = data[i + 1];
-                }
-                data = newData;
+            for (int i = index; i < Count -1; i++)
+            {
+                data[i] = data[i + 1];
+            }
+            Count--;
+            data[Count] = default(T);
         }
        
         public override string ToString()

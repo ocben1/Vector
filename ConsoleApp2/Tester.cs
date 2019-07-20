@@ -73,7 +73,10 @@ namespace Vector
             try
             {
                 Console.WriteLine("\nTest D: Insert number 50 at index 6, then number 0 at index 0, then number 60 at index 'vector.Count-1', then number 70 at index 'vector.Count'");
-                vector.Insert(6, 50); vector.Insert(0, 0); vector.Insert(vector.Count - 1, 60); vector.Insert(vector.Count, 70);
+                vector.Insert(6, 50);
+                vector.Insert(0, 0);
+                vector.Insert(vector.Count - 1, 60);
+                vector.Insert(vector.Count, 70);
                 if (!CheckIntSequence(new int[] { 0, 2, 8, 5, 5, 1, 8, 50, 5, 60, 5, 70 }, vector)) throw new Exception("Vector stores incorrect sequence of integers");
                 Console.WriteLine(" :: SUCCESS");
                 result = result + "D";
