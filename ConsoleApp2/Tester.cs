@@ -106,11 +106,18 @@ namespace Vector
                 result = result + "-";
             }
 
-            // test 6
+            // test 6 //log values at vector.Count-1
             try
             {
                 Console.WriteLine("\nTest F: Remove number at index 4, then number index 0, and then number at index 'vector.Count-1'");
-                vector.RemoveAt(4); vector.RemoveAt(0); vector.RemoveAt(vector.Count - 1);
+                vector.RemoveAt(4);
+                vector.RemoveAt(0);
+                Console.WriteLine("Number at index 'vector.Count-1' is {0}", vector[vector.Count-1]);
+
+                vector.RemoveAt(vector.Count - 1);
+                Console.WriteLine("***Remove number at index 'vector.Count-1'***");
+
+                Console.WriteLine("Number at index 'vector.Count-1' is {0}", vector[vector.Count - 1]);
                 if (!CheckIntSequence(new int[] { 2, 8, 5, 1, 8, 50, 5, 60, 5 }, vector)) throw new Exception("Vector stores incorrect sequence of integers");
                 Console.WriteLine(" :: SUCCESS");
                 result = result + "F";
@@ -186,12 +193,17 @@ namespace Vector
                 result = result + "-";
             }
 
-            // test 10
+            // test 10 //logged values for Count and Capacity before and after Clear call to make sure Capacity is preserved.
             try
             {
                 Console.WriteLine("\nTest J: Clear the content of the vector via calling vector.Clear();");
+                Console.WriteLine("Capacity before Clear is {0}, Count is {1}", vector.Capacity, vector.Count);
+
                 vector.Clear();
                 if (!CheckIntSequence(new int[] { }, vector)) throw new Exception("Vector stores incorrect data. It must be empty.");
+                Console.WriteLine("Capacity after Clear is {0}, Count is {1}", vector.Capacity, vector.Count);
+
+
                 Console.WriteLine(" :: SUCCESS");
                 result = result + "J";
             }
